@@ -1,0 +1,95 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Dashboard {% endblock %}
+
+<!-- Element injected in the BODY element -->
+{% block body_class %} sidebar-mini layout-fixed {% endblock body_class %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ ASSETS_ROOT }}/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="{{ ASSETS_ROOT }}/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet" href="{{ ASSETS_ROOT }}/css/adminlte.min.css">
+{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h4>List Division</h4>
+                </div>              
+            </div>
+        </div>
+    </section>
+    <!-- Content Header (Page header) -->
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <table id="list_divisions" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="pt-3 pb-3">Division Code</th>
+                                        <th class="pt-3 pb-3">Division Name</th>
+                                        <th class="pt-3 pb-3">Description</th>
+                                        <th class="pt-3 pb-3">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Main Content -->
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+<!-- jQuery -->
+<script src="{{ ASSETS_ROOT }}/plugins/jquery/jquery.min.js"></script>
+<!-- DataTables -->
+<script src="{{ ASSETS_ROOT }}/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="{{ ASSETS_ROOT }}/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="{{ ASSETS_ROOT }}/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="{{ ASSETS_ROOT }}/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<!-- page script -->
+
+<script>
+    $(function () {
+        data = { csrfmiddlewaretoken: '{{ csrf_token }}' }
+        $('#list_divisions').dataTable({
+            "responsive": true,
+            "autoWidth": false,
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "{% url 'list_divisions_json' %}",
+                "type": 'POST',
+                "data": data
+            },
+            "order": [1, 'asc'],
+        });
+        $('#event_list_filter input').addClass('form-control');
+    })
+
+    // ...
+</script>
+
+{% endblock javascripts %}
